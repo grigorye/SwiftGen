@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if !os(Linux)
 import AppKit.NSFont
+#endif
 import PathKit
 @testable import SwiftGenKit
 import TestUtils
@@ -19,11 +21,15 @@ final class FontsTests: XCTestCase {
   }
 
   func testDefaults() throws {
+#if os(Linux)
+    throw XCTSkip("Font parsing is not supported on Linux")
+#else
     let parser = try Fonts.Parser()
     try parser.searchAndParse(path: Fixtures.resourceDirectory())
 
     let result = parser.stencilContext()
     XCTDiffContexts(result, expected: "defaults", sub: .fonts)
+#endif
   }
 
   // MARK: - Custom options

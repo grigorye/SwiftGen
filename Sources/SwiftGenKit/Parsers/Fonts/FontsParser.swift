@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if !os(Linux)
 import AppKit.NSFont
+#endif
 import Foundation
 import PathKit
 
@@ -22,6 +24,9 @@ public enum Fonts {
     public static let defaultFilter = filterRegex(forExtensions: ["otf", "ttc", "ttf"])
 
     public func parse(path: Path, relativeTo parent: Path) throws {
+#if os(Linux)
+      unimplemented("Font parsing is not supported on Linux")
+#else
       guard checkIsFont(path: path) else {
         warningHandler?("File is not a known font type: \(path)", #file, #line)
         return
@@ -29,6 +34,7 @@ public enum Fonts {
 
       let fonts = CTFont.parse(file: path, relativeTo: parent)
       fonts.forEach { addFont($0) }
+#endif
     }
   }
 }
@@ -46,7 +52,11 @@ private extension Fonts.Parser {
       return true
     }
 
+    #if canImport(AppKit)
     return UTTypeConformsTo(uti as CFString, kUTTypeFont)
+    #else
+    return false
+    #endif
   }
 
   func addFont(_ font: Fonts.Font) {

@@ -4,12 +4,20 @@
 // MIT Licence
 //
 
+#if os(Linux)
+struct CTFont {}
+#else
 import AppKit.NSFont
+#endif
 import Foundation
 import PathKit
 
 extension CTFont {
   static func parse(file: Path, relativeTo parent: Path? = nil) -> [Fonts.Font] {
+#if os(Linux)
+    unimplemented("Font parsing is not supported on Linux")
+    return []
+#else
     let descs = CTFontManagerCreateFontDescriptorsFromURL(file.url as CFURL) as NSArray?
     guard let descRefs = (descs as? [CTFontDescriptor]) else { return [] }
 
@@ -27,5 +35,6 @@ extension CTFont {
         postScriptName: postScriptName
       )
     }
+#endif
   }
 }
