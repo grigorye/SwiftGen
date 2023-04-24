@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if canImport(AppKit)
 import AppKit
+#endif
 import ArgumentParser
 import SwiftGenCLI
 
@@ -29,7 +31,9 @@ extension Commands.Config {
       try config.file.write(content)
       logMessage(.info, "Example configuration file created: \(config.file)")
       if open {
+#if canImport(AppKit)
         NSWorkspace.shared.open(config.file.url)
+#endif
       }
     }
   }

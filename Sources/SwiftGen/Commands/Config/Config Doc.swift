@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if canImport(AppKit)
 import AppKit
+#endif
 import ArgumentParser
 import SwiftGenCLI
 
@@ -17,7 +19,9 @@ extension Commands.Config {
     func run() throws {
       let docURL = gitHubDocURL(version: Version.swiftgen, path: "ConfigFile.md")
       logMessage(.info, "Open documentation at: \(docURL)")
+#if canImport(AppKit)
       NSWorkspace.shared.open(docURL)
+#endif
     }
   }
 }

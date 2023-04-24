@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if canImport(AppKit)
 import AppKit
+#endif
 import ArgumentParser
 import SwiftGenCLI
 
@@ -43,7 +45,9 @@ extension Commands.Template {
 
       let url = gitHubDocURL(version: Version.swiftgen, path: path)
       logMessage(.info, "Opening documentation: \(url)")
+      #if canImport(AppKit)
       NSWorkspace.shared.open(url)
+      #endif
     }
   }
 }
