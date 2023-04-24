@@ -12,7 +12,9 @@ extension Files {
     let name: String
     let ext: String?
     let path: [String]
+    #if !os(Linux)
     let mimeType: String
+    #endif
 
     init(path: Path, relativeTo parent: Path? = nil) throws {
       guard path.exists else {
@@ -28,6 +30,7 @@ extension Files {
         self.path = []
       }
 
+#if !os(Linux)
       if let ext = self.ext,
         let uti = UTTypeCreatePreferredIdentifierForTag(
           kUTTagClassFilenameExtension, ext as NSString, nil
@@ -37,6 +40,7 @@ extension Files {
       } else {
         self.mimeType = "application/octet-stream"
       }
+#endif
     }
   }
 }

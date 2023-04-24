@@ -21,12 +21,20 @@ extension Files.Parser {
   }
 
   private func map(file: Files.File) -> [String: Any] {
+#if os(Linux)
+    [
+      "name": file.name,
+      "ext": file.ext ?? "",
+      "path": file.path.joined(separator: Path.separator),
+    ]
+#else
     [
       "name": file.name,
       "ext": file.ext ?? "",
       "path": file.path.joined(separator: Path.separator),
       "mimeType": file.mimeType
     ]
+#endif
   }
 
   typealias Mapper = (_ file: Files.File) -> [String: Any]

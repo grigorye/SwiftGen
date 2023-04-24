@@ -1,0 +1,15 @@
+groups:
+- directories:
+  - directories:
+    - files:
+      - ext: "mp4"
+        name: "another video"
+        path: "empty intermediate/subfolder"
+      name: "subfolder"
+    name: "empty intermediate"
+  - files:
+    - ext: "mp4"
+      name: "A Video With Spaces"
+      path: "subdir"
+    name: "subdir"
+  name: "Files"

@@ -21,7 +21,11 @@ final class FilesTests: XCTestCase {
     try parser.searchAndParse(path: Fixtures.resourceDirectory(sub: .files))
 
     let result = parser.stencilContext()
+#if !os(Linux)
     XCTDiffContexts(result, expected: "defaults", sub: .files)
+#else
+    XCTDiffContexts(result, expected: "defaults-no-mime", sub: .files)
+#endif
   }
 
   func testMp4s() throws {
@@ -29,7 +33,11 @@ final class FilesTests: XCTestCase {
     try parser.searchAndParse(path: Fixtures.resourceDirectory(sub: .files), filter: try Filter(pattern: ".mp4"))
 
     let result = parser.stencilContext()
+#if !os(Linux)
     XCTDiffContexts(result, expected: "mp4s", sub: .files)
+#else
+    XCTDiffContexts(result, expected: "mp4s-no-mime", sub: .files)
+#endif
   }
 
   // MARK: - Custom options
