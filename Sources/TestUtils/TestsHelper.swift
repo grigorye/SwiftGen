@@ -80,7 +80,7 @@ public class Fixtures {
 
   private static func path(for name: String, subDirectory: String? = nil) -> Path {
     guard let path = testBundle.path(forResource: name, ofType: "", inDirectory: subDirectory) else {
-      fatalError("Unable to find fixture \"\(name)\"")
+      fatalError("Unable to find fixture \"\(name)\"\(subDirectory.flatMap { " in \"\($0)\"" } ?? "")")
     }
     return Path(path)
   }
