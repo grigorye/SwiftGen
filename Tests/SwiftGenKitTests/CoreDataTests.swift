@@ -17,6 +17,9 @@ final class CoreDataTests: XCTestCase {
   }
 
   func testDefaults() throws {
+#if os(Linux)
+    throw XCTSkip("CoreData parsing involving predicates is not supported on Linux")
+#else
     let parser = try CoreData.Parser()
     do {
       try parser.searchAndParse(path: Fixtures.resource(for: "Model.xcdatamodeld", sub: .coreData))
@@ -26,6 +29,7 @@ final class CoreDataTests: XCTestCase {
 
     let result = parser.stencilContext()
     XCTDiffContexts(result, expected: "defaults", sub: .coreData)
+#endif
   }
 
   // MARK: - Custom options

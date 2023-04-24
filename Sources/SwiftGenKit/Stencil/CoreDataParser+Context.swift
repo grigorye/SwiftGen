@@ -130,8 +130,15 @@ extension CoreData.Parser {
   ) -> [String: String] {
     guard !predicateString.isEmpty else { return [:] }
 
+#if os(Linux)
+    unimplemented("""
+      Can not handle predicate string \"\(predicateString)\" with entity \"\(baseEntity.name)\" on Linux, due to lack of support for NSPredicate in swift-corelibs-foundation
+      """)
+    return [:]
+#else
     let predicate = NSPredicate(format: predicateString, argumentArray: nil)
     return substitutionVariables(in: predicate, baseEntity: baseEntity, model: model)
+#endif
   }
 
   private func substitutionVariables(
@@ -146,6 +153,12 @@ extension CoreData.Parser {
         variables.merge(subpredicateVariables) { existing, _ in existing }
       }
     } else if let comparisonPredicate = predicate as? NSComparisonPredicate {
+#if os(Linux)
+      unimplemented("""
+        Can not handle comparison predicate \"\(predicate)\" with entity \"(baseEntity.name)\" on Linux, due to lack of support for NSPredicate in swift-corelibs-foundation
+        """)
+      return [:]
+#else
       let lhs = comparisonPredicate.leftExpression
       let rhs = comparisonPredicate.rightExpression
 
@@ -153,6 +166,7 @@ extension CoreData.Parser {
 
       let typeName = resolveType(forKeyPath: lhs.keyPath, baseEntity: baseEntity, in: model)
       return [rhs.variable: typeName]
+#endif
     } else {
       return [:]
     }
