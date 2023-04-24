@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if !os(Linux)
 import AppKit
+#endif
 import Foundation
 import PathKit
 
@@ -63,6 +65,7 @@ extension Colors {
   }
 }
 
+#if !os(Linux)
 extension NSColor {
   var rgbColor: NSColor? {
     guard colorSpace.colorSpaceModel != .rgb else { return self }
@@ -81,3 +84,4 @@ extension NSColor {
     return hexRed | hexGreen | hexBlue | hexAlpha
   }
 }
+#endif

@@ -86,12 +86,16 @@ final class ColorParserTests: XCTestCase {
   // MARK: - Multiple palettes
 
   func testParseMultipleFiles() throws {
+#if os(Linux)
+    throw XCTSkip("Parsing .clr is not supported on Linux")
+#else
     let parser = try Colors.Parser()
     try parser.searchAndParse(path: Fixtures.resource(for: "colors.clr", sub: .colors))
     try parser.searchAndParse(path: Fixtures.resource(for: "extra.txt", sub: .colors))
 
     let result = parser.stencilContext()
     XCTDiffContexts(result, expected: "multiple", sub: .colors)
+#endif
   }
 
   // MARK: - String parsing
@@ -123,7 +127,10 @@ final class ColorParserTests: XCTestCase {
 
   // MARK: - Hex Value
 
-  func testHexValues() {
+  func testHexValues() throws {
+#if os(Linux)
+    throw XCTSkip("NSColor is not supported on Linux")
+#else
     let colors: [NSColor: UInt32] = [
       NSColor(red: 0, green: 0, blue: 0, alpha: 0): 0x00000000,
       NSColor(red: 1, green: 1, blue: 1, alpha: 1): 0xFFFFFFFF,
@@ -134,6 +141,7 @@ final class ColorParserTests: XCTestCase {
     for (color, value) in colors {
       XCTAssertEqual(color.hexValue, value)
     }
+#endif
   }
 
   // MARK: - Custom options

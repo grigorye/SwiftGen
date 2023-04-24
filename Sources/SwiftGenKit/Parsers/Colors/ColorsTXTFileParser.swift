@@ -53,8 +53,13 @@ extension Colors {
         let scanner = Scanner(string: line)
         scanner.charactersToBeSkipped = .whitespaces
 
+#if os(Linux)
+        var key: String?
+        var value: String?
+#else
         var key: NSString?
         var value: NSString?
+#endif
         guard scanner.scanUpTo(seperator, into: &key) &&
           scanner.scanString(seperator, into: nil) &&
           scanner.scanUpToCharacters(from: .whitespaces, into: &value) else {

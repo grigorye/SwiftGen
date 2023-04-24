@@ -30,4 +30,13 @@ final class ColorsCLRFileTests: XCTestCase {
       XCTFail("Unexpected error occured while parsing: \(error)")
     }
   }
+
+  // MARK: -
+
+  override func setUpWithError() throws {
+    try super.setUpWithError()
+#if os(Linux)
+    throw XCTSkip("Parsing .clr is not supported on Linux")
+#endif
+  }
 }

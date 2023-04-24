@@ -4,7 +4,9 @@
 // MIT Licence
 //
 
+#if !os(Linux)
 import AppKit
+#endif
 import Foundation
 import PathKit
 
@@ -20,6 +22,10 @@ extension Colors {
     }
 
     func parseFile(at path: Path) throws -> Palette {
+#if os(Linux)
+      unimplemented("Parsing .clr is not implemented on Linux")
+      throw ParserError.invalidFile(path: path, reason: "Invalid color list")
+#else
       if let colorsList = NSColorList(name: Keys.userColors, fromFile: path.string) {
         var colors = [String: UInt32]()
 
@@ -32,6 +38,7 @@ extension Colors {
       } else {
         throw ParserError.invalidFile(path: path, reason: "Invalid color list")
       }
+#endif
     }
   }
 }
