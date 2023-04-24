@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CoreFoundation
 import Yams
 
 public enum YamsSerializationError: Error {
@@ -57,6 +58,7 @@ extension NSNumber: ScalarRepresentable {
     if CFGetTypeID(self) == CFBooleanGetTypeID() {
       return boolValue.represented()
     } else {
+#if !os(Linux)
       switch CFNumberGetType(self) {
       case .sInt8Type:
         return int8Value.represented()
@@ -77,6 +79,32 @@ extension NSNumber: ScalarRepresentable {
       default:
         return Double.nan.represented()
       }
+#else
+      switch _objCType(self) {
+      case _objCType(Int8(1) as NSNumber):
+        return int8Value.represented()
+      case _objCType(Int16(1) as NSNumber):
+        return int16Value.represented()
+      case _objCType(Int32(1) as NSNumber):
+        return int32Value.represented()
+      case _objCType(Int64(1) as NSNumber):
+        return int64Value.represented()
+      case _objCType(NSNumber(value: CChar(1))):
+        return uint8Value.represented()
+      case _objCType(Int(1) as NSNumber):
+        return intValue.represented()
+      case _objCType(Float32(1) as NSNumber), _objCType(Float(1) as NSNumber):
+        return floatValue.represented()
+      case _objCType(Float64(1) as NSNumber), _objCType(Double(1) as NSNumber):
+        return doubleValue.represented()
+      default:
+        return Double.nan.represented()
+      }
+#endif
     }
   }
+}
+
+fileprivate func _objCType(_ x: NSNumber) -> String {
+  String(cString: x.objCType)
 }

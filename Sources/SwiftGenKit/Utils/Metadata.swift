@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CoreFoundation
 
 enum Metadata {
   private enum Key {
@@ -118,6 +119,7 @@ enum Metadata {
     if CFGetTypeID(number) == CFBooleanGetTypeID() {
       return ValueType.bool
     } else {
+#if !os(Linux)
       switch CFNumberGetType(number) {
       case .sInt8Type, .sInt16Type, .sInt32Type, .sInt64Type, .charType, .intType, .longType, .longLongType,
         .nsIntegerType:
@@ -127,6 +129,16 @@ enum Metadata {
       default:
         return ValueType.any
       }
+#else
+      switch number {
+      case let x where x.typeMatchesAnyOf([Int8(1), Int16(1), Int32(1), Int64(1), Int(1)]):
+        return ValueType.int
+      case let x where x.typeMatchesAnyOf([Float32(0.1), Float64(0.1), Double(0.1)]):
+        return ValueType.double
+      default:
+        return ValueType.any
+      }
+#endif
     }
   }
 
@@ -144,6 +156,14 @@ enum Metadata {
       return elementType
     } else {
       return nil
+    }
+  }
+}
+
+extension NSNumber {
+  fileprivate func typeMatchesAnyOf(_ numbers: [any Numeric]) -> Bool {
+    numbers.contains { n in
+      strcmp(self.objCType, (n as! NSNumber).objCType) == 0
     }
   }
 }
