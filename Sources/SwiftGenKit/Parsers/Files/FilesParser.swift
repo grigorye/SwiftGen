@@ -4,7 +4,6 @@
 // MIT Licence
 //
 
-import CoreServices
 import Foundation
 import PathKit
 

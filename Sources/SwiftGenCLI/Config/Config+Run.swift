@@ -4,7 +4,6 @@
 // MIT Licence
 //
 
-import AppKit
 import PathKit
 import Stencil
 import StencilSwiftKit
