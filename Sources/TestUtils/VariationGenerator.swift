@@ -74,7 +74,7 @@ public extension XCTestCase {
         }
 
         // check if we should generate or not
-        if ProcessInfo().environment["GENERATE_OUTPUT"] == "YES" {
+        if ProcessInfo.processInfo.environment["GENERATE_OUTPUT"] == "YES" {
           let target = Path(#filePath).parent() + "Fixtures/Generated" + outputDir.rawValue +
             templateName + outputFile
           do {

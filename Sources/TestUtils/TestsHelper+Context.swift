@@ -33,7 +33,7 @@ public func XCTDiffContexts(
 ) {
   let fileName = "\(name).yaml"
 
-  if ProcessInfo().environment["GENERATE_CONTEXTS"] == "YES" {
+  if ProcessInfo.processInfo.environment["GENERATE_CONTEXTS"] == "YES" {
     store(context: received, directory: directory, fileName: fileName)
   } else {
     do {
