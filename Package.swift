@@ -16,9 +16,9 @@ let package = Package(
     .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1"),
     .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
     .package(url: "https://github.com/krzysztofzablocki/Difference.git", branch: "master"),
-    .package(url: "https://github.com/stencilproject/Stencil.git", from: "0.15.1"),
+    .package(url: "https://github.com/grigorye/Stencil.git", branch: "linux-experiment"),
     .package(url: "https://github.com/shibapm/Komondor.git", exact: "1.1.3"),
-    .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.10.1"),
+    .package(url: "https://github.com/grigorye/StencilSwiftKit.git", branch: "stencil-linux-experiment"),
     .package(url: "https://github.com/tid-kijyun/Kanna.git", from: "5.2.7")
   ],
   targets: [
